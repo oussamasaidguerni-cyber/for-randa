@@ -287,7 +287,9 @@ const ZODIACS = {
     const pts = ZODIACS[(CONFIG.HER_SIGN || "").toLowerCase()] ||
       [[30,30],[42,38],[55,34],[48,48],[60,58],[72,52]];
     const s = Math.min(1.6, innerWidth / 700);
-    const ox = c.width - 260 * s - 20, oy = 90, k = 1.6 * s;
+    const narrow = innerWidth < 640;
+    const ox = narrow ? c.width - 130 * s - 8 : c.width - 260 * s - 20;
+    const oy = narrow ? 14 : 90, k = 1.6 * s;
     g.strokeStyle = 'rgba(240,217,152,.55)'; g.lineWidth = 1.2;
     g.beginPath();
     pts.forEach(([x, y], i) => { const px = ox + x * k, py = oy + y * k; i ? g.lineTo(px, py) : g.moveTo(px, py); });
