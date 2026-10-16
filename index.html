@@ -63,7 +63,7 @@
   .pick .slot { position: absolute; bottom: -26px; left: 0; right: 0; color: #f0d998; font-size: .95rem; letter-spacing: 2px; }
   /* Revealed spread */
   #cards { display: flex; gap: 22px; justify-content: center; flex-wrap: wrap; margin-top: 44px; }
-  .card { width: 210px; aspect-ratio: 210/344; perspective: 1200px; cursor: pointer; }
+  .card { width: 210px; aspect-ratio: 3/5; perspective: 1200px; cursor: pointer; }
   .card .inner {
     width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
     transition: transform 1.15s cubic-bezier(.25,.7,.25,1); will-change: transform;
@@ -100,7 +100,7 @@
     border: 3px double #8a6d1f; outline: 1px solid #c9a227; outline-offset: -8px;
     display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start;
   }
-  .arcana-art { position: relative; padding: 20px 0 30px; border-bottom: 1px solid rgba(138,109,31,.5); }
+  .arcana-art { position: relative; padding: 14px 0 24px; border-bottom: 1px solid rgba(138,109,31,.5); }
   .art-0 { background: radial-gradient(circle at 50% 20%, #4a5a9e 0%, #232a55 55%, #141838 100%); }
   .art-1 { background: radial-gradient(circle at 50% 20%, #9e4a6e 0%, #552338 55%, #38141f 100%); }
   .art-2 { background: radial-gradient(circle at 50% 20%, #8a6d2f 0%, #554322 55%, #38301a 100%); }
@@ -109,7 +109,7 @@
   }
   .arcana-art::before { left: 10px; } .arcana-art::after { right: 10px; }
   .arcana-glyph { display: flex; justify-content: center; }
-  .arcana-svg svg { width: 88px; height: 88px; color: #f5e6b8;
+  .arcana-svg svg { width: 66px; height: 66px; color: #f5e6b8;
     filter: drop-shadow(0 0 14px rgba(245,230,184,.8)); }
   .arcana-num {
     position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%);
@@ -120,11 +120,11 @@
     border: 1px solid #8a6d1f; box-shadow: 0 2px 6px rgba(0,0,0,.4);
   }
   .arcana-name {
-    margin: 24px 12px 0; padding: 6px 4px; color: #f3e6c4; background: linear-gradient(180deg, #4a3372, #33204f);
-    letter-spacing: 3px; font-size: .82rem; border: 1px solid #c9a227; border-radius: 4px;
+    margin: 22px 12px 0; padding: 5px 4px; color: #f3e6c4; background: linear-gradient(180deg, #4a3372, #33204f);
+    letter-spacing: 3px; font-size: .78rem; border: 1px solid #c9a227; border-radius: 4px;
   }
-  .front h3 { color: #4a3372; letter-spacing: 2px; font-size: .95rem; margin-top: 8px; }
-  .front p { font-size: .98rem; line-height: 1.42; padding: 0 14px 14px; }
+  .front h3 { color: #4a3372; letter-spacing: 2px; font-size: .9rem; margin-top: 7px; }
+  .front p { font-size: .88rem; line-height: 1.38; padding: 0 13px 12px; }
   /* Reasons */
   #reasons { margin: 56px auto 0; max-width: 640px; }
   #reasons h2 { color: #f0d998; letter-spacing: 2px; margin-bottom: 6px; }
