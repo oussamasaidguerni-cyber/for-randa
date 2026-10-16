@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three Cards for Randa</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: radial-gradient(ellipse at 50% 120%, #2b1b4d 0%, #150e2b 55%, #0a0618 100%);
+    color: #e8dcc3; font-family: 'Cormorant Garamond', Georgia, serif;
+    min-height: 100vh; overflow-x: hidden; text-align: center;
+  }
+  #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 40px 20px 80px; }
+  .moon { font-size: 64px; filter: drop-shadow(0 0 25px #f5e6b8); animation: glow 4s ease-in-out infinite; }
+  @keyframes glow { 50% { filter: drop-shadow(0 0 45px #f5e6b8); } }
+  h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); color: #f0d998; letter-spacing: 2px; margin: 10px 0; font-weight: 600; }
+  .sub { font-style: italic; font-size: 1.25rem; color: #c9b78f; margin-bottom: 30px; }
+  .btn {
+    background: linear-gradient(180deg, #6b4fa1, #4a3372); color: #f5eeda;
+    border: 1px solid #c9a227; border-radius: 999px; padding: 14px 42px;
+    font-size: 1.2rem; font-family: inherit; cursor: pointer; letter-spacing: 1px;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(201,162,39,.5); }
+  .hidden { display: none !important; }
+  #deck-zone { margin: 30px 0; }
+  .deck {
+    width: 130px; height: 200px; margin: 0 auto; border-radius: 12px; cursor: pointer;
+    background: linear-gradient(135deg, #3b2566, #241645);
+    border: 2px solid #c9a227; display: flex; align-items: center; justify-content: center;
+    font-size: 56px; transition: transform .3s;
+  }
+  .deck:hover { transform: scale(1.05); }
+  .deck.shuffling { animation: shuffle .5s ease-in-out 6; }
+  @keyframes shuffle { 25% { transform: translateX(-14px) rotate(-4deg); } 75% { transform: translateX(14px) rotate(4deg); } }
+  #cards { display: flex; gap: 22px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+  .card { width: 200px; height: 300px; perspective: 1000px; cursor: pointer; }
+  .card .inner {
+    width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
+    transition: transform .8s cubic-bezier(.4,.1,.2,1);
+  }
+  .card.flipped .inner { transform: rotateY(180deg); }
+  .face {
+    position: absolute; inset: 0; backface-visibility: hidden; border-radius: 14px;
+    border: 2px solid #c9a227; padding: 20px 14px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 10px;
+  }
+  .back { background: linear-gradient(135deg, #3b2566, #1c1038); font-size: 48px; }
+  .back small { font-size: 1rem; color: #c9a227; letter-spacing: 3px; }
+  .front { background: linear-gradient(180deg, #f3e8cf, #e0cfa8); color: #3a2a18; transform: rotateY(180deg); }
+  .front h3 { color: #6b4fa1; letter-spacing: 2px; font-size: 1.05rem; }
+  .front .glyph { font-size: 40px; }
+  .front p { font-size: 1.02rem; line-height: 1.45; }
+  #letter {
+    margin: 50px auto 0; max-width: 620px; background: rgba(243,232,207,.06);
+    border: 1px solid #c9a227; border-radius: 16px; padding: 36px 30px;
+  }
+  #letter h2 { color: #f0d998; margin-bottom: 16px; letter-spacing: 2px; }
+  #letter p { font-size: 1.2rem; line-height: 1.7; margin-bottom: 14px; text-align: left; }
+  #letter .sign { text-align: right; font-style: italic; color: #c9b78f; }
+  #forgive-zone { margin-top: 26px; display: flex; gap: 16px; justify-content: center; }
+  #no-btn { background: transparent; }
+  #verdict { margin-top: 22px; font-size: 1.5rem; min-height: 2.5em; font-style: italic; color: #f0d998; }
+  .hearts { font-size: 2rem; animation: glow 2s infinite; }
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="wrap">
+  <div class="moon">☾</div>
+  <h1>Three Cards for Randa</h1>
+  <p class="sub">The universe asked for a reading. It pulled these three — for you, from me.</p>
+
+  <div id="deck-zone">
+    <p class="sub" style="font-size:1.1rem">Close your eyes. Think of us. Then tap the deck to shuffle.</p>
+    <div class="deck" id="deck">✦</div>
+  </div>
+
+  <div id="cards" class="hidden">
+    <div class="card" data-i="0"><div class="inner">
+      <div class="face back">☽<small>PAST</small></div>
+      <div class="face front"><div class="glyph">🌙</div><h3>I · THE PAST</h3>
+        <p>That repost that pissed you off — I need you to know I didn't mean it, not for a second. What you saw is not what I felt. I'm sorry it landed the way it did.</p></div>
+    </div></div>
+    <div class="card" data-i="1"><div class="inner">
+      <div class="face back">☽<small>PRESENT</small></div>
+      <div class="face front"><div class="glyph">🔮</div><h3>II · THE PRESENT</h3>
+        <p>What I see in you right now: someone who feels deeply, trusts her intuition, and loves fiercely — and I get to be loved by her. That is the rarest card in any deck, and it's you.</p></div>
+    </div></div>
+    <div class="card" data-i="2"><div class="inner">
+      <div class="face back">☽<small>FUTURE</small></div>
+      <div class="face front"><div class="glyph">⭐</div><h3>III · THE FUTURE</h3>
+        <p>About this — my proposition came out all wrong, and I own that. Hear this clearly: no matter how absurd the situation ever gets, I would never lie to you. Honesty first. Always. That's my vow.</p></div>
+    </div></div>
+  </div>
+  <p class="sub hidden" id="tap-hint" style="font-size:1.1rem">Tap each card to reveal it.</p>
+
+  <div id="letter" class="hidden">
+    <h2>✦ A LETTER, NOT A READING ✦</h2>
+    <p>Randa,</p>
+    <p>The cards were just the excuse — this part is only me. I'm sorry about that repost, and I'm sorry about this. Twice now you've had reason to doubt me, and I hate that, because being someone you can trust matters more to me than being right about anything.</p>
+    <p>So no riddles, no readings: I didn't mean the repost, my proposition was badly put, and I will never lie to you — no matter how absurd things get. You have my word, and you have me.</p>
+    <p class="sign">— yours, always</p>
+    <div id="forgive-zone">
+      <button class="btn" id="yes-btn">I forgive you</button>
+      <button class="btn" id="no-btn">Not yet</button>
+    </div>
+    <div id="verdict"></div>
+  </div>
+</div>
+
+<script>
+  // Starfield
+  const cv = document.getElementById('stars'), cx = cv.getContext('2d');
+  function sky() {
+    cv.width = innerWidth; cv.height = innerHeight;
+    cx.fillStyle = '#fff';
+    for (let i = 0; i < 160; i++) {
+      const a = Math.random() * 0.8 + 0.1;
+      cx.globalAlpha = a;
+      cx.beginPath();
+      cx.arc(Math.random() * cv.width, Math.random() * cv.height, Math.random() * 1.4 + .3, 0, 7);
+      cx.fill();
+    }
+    cx.globalAlpha = 1;
+  }
+  sky(); addEventListener('resize', sky);
+
+  const deck = document.getElementById('deck'),
+        cards = document.getElementById('cards'),
+        hint = document.getElementById('tap-hint'),
+        letter = document.getElementById('letter');
+  let flipped = 0;
+
+  deck.addEventListener('click', () => {
+    deck.classList.add('shuffling');
+    setTimeout(() => {
+      document.getElementById('deck-zone').classList.add('hidden');
+      cards.classList.remove('hidden');
+      hint.classList.remove('hidden');
+    }, 3000);
+  });
+
+  document.querySelectorAll('.card').forEach(c => c.addEventListener('click', () => {
+    if (c.classList.contains('flipped')) return;
+    c.classList.add('flipped');
+    if (++flipped === 3) setTimeout(() => {
+      hint.classList.add('hidden');
+      letter.classList.remove('hidden');
+      letter.scrollIntoView({ behavior: 'smooth' });
+    }, 1200);
+  }));
+
+  const verdict = document.getElementById('verdict');
+  document.getElementById('yes-btn').addEventListener('click', () => {
+    verdict.innerHTML = '<div class="hearts">♥ ♥ ♥</div>The stars approve. Come here — you owe me a hug.';
+  });
+  const noBtn = document.getElementById('no-btn');
+  noBtn.addEventListener('click', () => {
+    // The "not yet" button playfully dodges — she has to catch it, then it surrenders
+    const x = (Math.random() - .5) * 200, y = (Math.random() - .5) * 80;
+    noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    verdict.textContent = 'The cards say: he will keep shuffling until you say yes. (Tip: the other button works first try.)';
+  });
+</script>
+</body>
+</html>
