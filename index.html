@@ -76,9 +76,9 @@
   .card.flipped .inner { transform: rotateY(180deg); }
   .card.landed .inner { animation: landglow 1.6s ease-out; }
   @keyframes landglow {
-    0% { filter: drop-shadow(0 0 0 rgba(245,230,184,0)); }
-    35% { filter: drop-shadow(0 0 35px rgba(245,230,184,.95)); }
-    100% { filter: drop-shadow(0 0 8px rgba(245,230,184,.25)); }
+    0% { box-shadow: 0 0 0 rgba(245,230,184,0); }
+    35% { box-shadow: 0 0 45px 8px rgba(245,230,184,.9); }
+    100% { box-shadow: 0 0 10px 1px rgba(245,230,184,.2); }
   }
   .face {
     position: absolute; inset: 0; backface-visibility: hidden; border-radius: 14px;
