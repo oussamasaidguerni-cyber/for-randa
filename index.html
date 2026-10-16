@@ -13,37 +13,35 @@
     color: #e8dcc3; font-family: 'Cormorant Garamond', Georgia, serif;
     min-height: 100vh; overflow-x: hidden; text-align: center;
   }
-  #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-  #constellation { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .8; }
+  #stars, #constellation { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  #constellation { opacity: .8; }
   .wrap { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; }
   .moon { font-size: 64px; filter: drop-shadow(0 0 25px #f5e6b8); animation: glow 4s ease-in-out infinite; }
   @keyframes glow { 50% { filter: drop-shadow(0 0 45px #f5e6b8); } }
-  h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); color: #f0d998; letter-spacing: 2px; margin: 10px 0; font-weight: 600; }
+  h1 { font-size: clamp(2rem, 8vw, 3.6rem); color: #f0d998; letter-spacing: 2px; margin: 10px 0; font-weight: 600; }
   .sub { font-style: italic; font-size: 1.25rem; color: #c9b78f; margin-bottom: 30px; }
   .btn {
     background: linear-gradient(180deg, #6b4fa1, #4a3372); color: #f5eeda;
     border: 1px solid #c9a227; border-radius: 999px; padding: 14px 42px;
     font-size: 1.2rem; font-family: inherit; cursor: pointer; letter-spacing: 1px;
-    transition: transform .2s, box-shadow .2s;
+    transition: transform .2s, box-shadow .2s; touch-action: manipulation;
   }
   .btn:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(201,162,39,.5); }
   .hidden { display: none !important; }
-  #music-btn {
-    position: fixed; top: 14px; right: 14px; z-index: 5; background: rgba(20,12,40,.7);
-    color: #c9a227; border: 1px solid #c9a227; border-radius: 999px; padding: 8px 16px;
-    font-family: inherit; font-size: .95rem; cursor: pointer;
-  }
   /* Deck */
   #deck-zone { margin: 30px 0; }
   .deck {
-    width: 130px; height: 200px; margin: 0 auto; border-radius: 12px; cursor: pointer;
+    width: 130px; aspect-ratio: 130/200; margin: 0 auto; border-radius: 12px; cursor: pointer;
     background:
-      radial-gradient(circle at 50% 30%, rgba(201,162,39,.35), transparent 60%),
-      repeating-linear-gradient(45deg, rgba(201,162,39,.12) 0 2px, transparent 2px 8px),
+      radial-gradient(circle at 50% 28%, rgba(245,230,184,.5), transparent 42%),
+      radial-gradient(circle at 20% 75%, rgba(255,255,255,.5), transparent 3px),
+      radial-gradient(circle at 80% 60%, rgba(255,255,255,.5), transparent 3px),
+      radial-gradient(circle at 65% 82%, rgba(255,255,255,.4), transparent 2px),
+      repeating-linear-gradient(45deg, rgba(201,162,39,.14) 0 2px, transparent 2px 8px),
       linear-gradient(135deg, #3b2566, #241645);
     border: 2px solid #c9a227; outline: 1px solid rgba(201,162,39,.5); outline-offset: 5px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 56px; transition: transform .3s;
+    font-size: 56px; transition: transform .3s; touch-action: manipulation;
   }
   .deck:hover { transform: scale(1.05); }
   .deck.shuffling { animation: shuffle .5s ease-in-out 6; }
@@ -51,24 +49,21 @@
   /* Fan of cards to choose from */
   #fan { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
   .pick {
-    width: 130px; height: 200px; border-radius: 12px; cursor: pointer; position: relative;
+    width: 130px; aspect-ratio: 130/200; border-radius: 12px; cursor: pointer; position: relative;
     background:
-      radial-gradient(circle at 50% 35%, rgba(201,162,39,.4), transparent 55%),
+      radial-gradient(circle at 50% 30%, rgba(201,162,39,.4), transparent 55%),
       repeating-linear-gradient(-45deg, rgba(201,162,39,.12) 0 2px, transparent 2px 8px),
       linear-gradient(135deg, #3b2566, #1c1038);
     border: 2px solid #c9a227; display: flex; align-items: center; justify-content: center;
-    font-size: 40px; transition: transform .25s, opacity .5s, box-shadow .25s;
+    font-size: 40px; transition: transform .25s, opacity .5s, box-shadow .25s; touch-action: manipulation;
   }
   .pick:hover { transform: translateY(-10px); box-shadow: 0 0 20px rgba(201,162,39,.45); }
   .pick.chosen { border-color: #f5e6b8; box-shadow: 0 0 30px rgba(245,230,184,.7); transform: translateY(-12px); }
   .pick.dismissed { opacity: .12; pointer-events: none; }
-  .pick .slot {
-    position: absolute; bottom: -26px; left: 0; right: 0; color: #f0d998;
-    font-size: .95rem; letter-spacing: 2px;
-  }
+  .pick .slot { position: absolute; bottom: -26px; left: 0; right: 0; color: #f0d998; font-size: .95rem; letter-spacing: 2px; }
   /* Revealed spread */
   #cards { display: flex; gap: 22px; justify-content: center; flex-wrap: wrap; margin-top: 44px; }
-  .card { width: 210px; height: 330px; perspective: 1200px; cursor: pointer; }
+  .card { width: 210px; aspect-ratio: 210/344; perspective: 1200px; cursor: pointer; }
   .card .inner {
     width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
     transition: transform .9s cubic-bezier(.4,.1,.2,1);
@@ -81,43 +76,66 @@
     100% { box-shadow: 0 0 10px 1px rgba(245,230,184,.2); }
   }
   .face {
-    position: absolute; inset: 0; backface-visibility: hidden; border-radius: 14px;
-    padding: 22px 14px; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 10px;
+    position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border-radius: 14px; overflow: hidden;
   }
   .back {
     background:
-      radial-gradient(circle at 50% 30%, rgba(201,162,39,.35), transparent 60%),
-      repeating-linear-gradient(45deg, rgba(201,162,39,.12) 0 2px, transparent 2px 8px),
+      radial-gradient(circle at 50% 26%, rgba(245,230,184,.45), transparent 40%),
+      radial-gradient(circle at 18% 70%, rgba(255,255,255,.55), transparent 3px),
+      radial-gradient(circle at 82% 72%, rgba(255,255,255,.55), transparent 3px),
+      radial-gradient(circle at 50% 88%, rgba(255,255,255,.4), transparent 2px),
+      repeating-linear-gradient(45deg, rgba(201,162,39,.14) 0 2px, transparent 2px 8px),
       linear-gradient(135deg, #3b2566, #1c1038);
     border: 2px solid #c9a227; outline: 1px solid rgba(201,162,39,.5); outline-offset: 5px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
     font-size: 48px;
   }
   .back small { font-size: 1rem; color: #c9a227; letter-spacing: 3px; }
+  .back .mono { font-size: .85rem; color: rgba(201,162,39,.75); letter-spacing: 5px; }
+  /* Major arcana face */
   .front {
-    background:
-      radial-gradient(circle at 50% 0%, rgba(107,79,161,.18), transparent 55%),
-      linear-gradient(180deg, #f5ecd6, #dfcda4);
+    background: linear-gradient(180deg, #f7efdb 0%, #e7d6ae 70%, #d9c193 100%);
     color: #3a2a18; transform: rotateY(180deg);
-    border: 2px solid #c9a227; outline: 1px solid #6b4fa1; outline-offset: -7px;
+    border: 3px double #8a6d1f; outline: 1px solid #c9a227; outline-offset: -8px;
+    display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start;
   }
-  .front h3 { color: #4a3372; letter-spacing: 2px; font-size: 1rem; }
-  .front .numeral { color: #8a6d1f; letter-spacing: 4px; font-size: .9rem; }
-  .front .glyph { font-size: 40px; }
-  .front p { font-size: 1rem; line-height: 1.45; }
+  .arcana-art { position: relative; padding: 20px 0 30px; border-bottom: 1px solid rgba(138,109,31,.5); }
+  .art-0 { background: radial-gradient(circle at 50% 20%, #4a5a9e 0%, #232a55 55%, #141838 100%); }
+  .art-1 { background: radial-gradient(circle at 50% 20%, #9e4a6e 0%, #552338 55%, #38141f 100%); }
+  .art-2 { background: radial-gradient(circle at 50% 20%, #8a6d2f 0%, #554322 55%, #38301a 100%); }
+  .arcana-art::before, .arcana-art::after {
+    content: '✦'; position: absolute; top: 8px; color: rgba(245,230,184,.85); font-size: .9rem;
+  }
+  .arcana-art::before { left: 10px; } .arcana-art::after { right: 10px; }
+  .arcana-glyph { font-size: 54px; filter: drop-shadow(0 0 14px rgba(245,230,184,.8)); }
+  .arcana-num {
+    position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%);
+    width: 38px; height: 38px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #f5e6b8, #c9a227);
+    color: #3a2a10; font-weight: 600; font-size: .95rem; letter-spacing: 1px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid #8a6d1f; box-shadow: 0 2px 6px rgba(0,0,0,.4);
+  }
+  .arcana-name {
+    margin: 24px 12px 0; padding: 6px 4px; color: #f3e6c4; background: linear-gradient(180deg, #4a3372, #33204f);
+    letter-spacing: 3px; font-size: .82rem; border: 1px solid #c9a227; border-radius: 4px;
+  }
+  .front h3 { color: #4a3372; letter-spacing: 2px; font-size: .95rem; margin-top: 8px; }
+  .front p { font-size: .98rem; line-height: 1.42; padding: 0 14px 14px; }
   /* Reasons */
   #reasons { margin: 56px auto 0; max-width: 640px; }
   #reasons h2 { color: #f0d998; letter-spacing: 2px; margin-bottom: 6px; }
   #sky-reasons { display: flex; gap: 26px; justify-content: center; margin: 22px 0; flex-wrap: wrap; }
   .rstar {
     font-size: 30px; cursor: pointer; filter: drop-shadow(0 0 12px #f5e6b8);
-    transition: transform .2s; animation: twinkle 2.4s ease-in-out infinite;
+    transition: transform .2s; animation: twinkle 2.4s ease-in-out infinite; touch-action: manipulation;
   }
   .rstar:nth-child(2n) { animation-delay: .7s; } .rstar:nth-child(3n) { animation-delay: 1.3s; }
   @keyframes twinkle { 50% { opacity: .45; } }
   .rstar:hover { transform: scale(1.3); }
   .rstar.open { animation: none; opacity: .9; }
-  #reason-text { min-height: 3em; font-size: 1.35rem; font-style: italic; color: #f5e6b8; }
+  #reason-text { min-height: 3em; font-size: 1.35rem; font-style: italic; color: #f5e6b8; padding: 0 10px; }
   /* Letter */
   #letter {
     margin: 50px auto 0; max-width: 620px; background: rgba(243,232,207,.06);
@@ -132,14 +150,30 @@
   .hearts { font-size: 2rem; animation: glow 2s infinite; }
   /* Bonus card */
   #bonus { margin: 40px auto 0; max-width: 420px; }
-  #bonus .card { width: 240px; height: 360px; margin: 0 auto; }
+  #bonus .card { width: 240px; margin: 0 auto; }
   #bonus h2 { color: #f0d998; letter-spacing: 2px; margin-bottom: 18px; }
+  /* ============ Phone layout ============ */
+  @media (max-width: 640px) {
+    .wrap { padding: 28px 14px 60px; }
+    .sub { font-size: 1.1rem; }
+    #fan { gap: 8px; }
+    .pick { width: 29vw; max-width: 108px; font-size: 30px; border-radius: 10px; }
+    .pick .slot { font-size: .72rem; bottom: -22px; letter-spacing: 1px; }
+    #cards { gap: 18px; margin-top: 40px; }
+    .card { width: min(74vw, 240px); }
+    .front p { font-size: 1.02rem; }
+    #letter { padding: 26px 18px; }
+    #letter p { font-size: 1.1rem; }
+    #forgive-zone { flex-direction: column; }
+    #forgive-zone .btn { width: 100%; }
+    #reason-text { font-size: 1.2rem; }
+    #sky-reasons { gap: 20px; }
+  }
 </style>
 </head>
 <body>
 <canvas id="stars"></canvas>
 <canvas id="constellation"></canvas>
-<button id="music-btn" class="hidden">♪ music: off</button>
 <div class="wrap">
   <div class="moon">☾</div>
   <h1>Three Cards for Randa</h1>
@@ -156,6 +190,7 @@
   </div>
 
   <div id="cards" class="hidden"></div>
+  <p class="sub hidden" id="flip-hint" style="font-size:1.1rem">Now tap each card to reveal its arcana.</p>
 
   <div id="reasons" class="hidden">
     <h2>✦ The sky has a few more things to say ✦</h2>
@@ -181,9 +216,13 @@
   <div id="bonus" class="hidden">
     <h2>✦ The deck had one more card for you ✦</h2>
     <div class="card" id="bonus-card"><div class="inner">
-      <div class="face back">✦<small>FOR YOU</small></div>
-      <div class="face front"><div class="glyph">🌹</div><h3 id="bonus-title">A NIGHT OUT, MY TREAT</h3>
-        <p id="bonus-text">This weekend — dinner anywhere you choose, my treat. Phones away. Just us.</p></div>
+      <div class="face back">✦<small>FOR YOU</small><span class="mono">· R ·</span></div>
+      <div class="face front">
+        <div class="arcana-art art-2"><span class="arcana-glyph">🌹</span><span class="arcana-num">♥</span></div>
+        <div class="arcana-name">THE GESTURE</div>
+        <h3 id="bonus-title">A NIGHT OUT, MY TREAT</h3>
+        <p id="bonus-text">This weekend — dinner anywhere you choose, my treat. Phones away. Just us.</p>
+      </div>
     </div></div>
   </div>
 </div>
@@ -205,13 +244,13 @@ const CONFIG = {
 document.getElementById('bonus-title').textContent = CONFIG.DATE_TITLE;
 document.getElementById('bonus-text').textContent = CONFIG.DATE_TEXT;
 
-/* Card data: arcana identity + message */
+/* Card data: major arcana identity + message */
 const ARCANA = [
-  { numeral: "V", name: "FIVE OF CUPS", glyph: "🌙", title: "I · THE PAST",
+  { numeral: "V", name: "FIVE OF CUPS", glyph: "🌙", art: "art-0", title: "I · THE PAST",
     text: "That repost that pissed you off — I need you to know I didn't mean it, not for a second. What you saw is not what I felt. I'm sorry it landed the way it did." },
-  { numeral: "VI", name: "THE LOVERS", glyph: "🔮", title: "II · THE PRESENT",
+  { numeral: "VI", name: "THE LOVERS", glyph: "🔮", art: "art-1", title: "II · THE PRESENT",
     text: "What I see in you right now: someone who feels deeply, trusts her intuition, and loves fiercely — and I get to be loved by her. That is the rarest card in any deck, and it's you." },
-  { numeral: "XVII", name: "THE STAR", glyph: "⭐", title: "III · THE FUTURE",
+  { numeral: "XVII", name: "THE STAR", glyph: "⭐", art: "art-2", title: "III · THE FUTURE",
     text: "About this — my proposition came out all wrong, and I own that. But hear my vow: no matter how absurd things ever get, I will never lie to you, and my loyalty is yours — no matter what. Honesty first. Always." }
 ];
 const SLOTS = ["THE PAST", "THE PRESENT", "THE FUTURE"];
@@ -247,14 +286,15 @@ const ZODIACS = {
     c.width = innerWidth; c.height = innerHeight;
     const pts = ZODIACS[(CONFIG.HER_SIGN || "").toLowerCase()] ||
       [[30,30],[42,38],[55,34],[48,48],[60,58],[72,52]];
-    const ox = c.width - 260, oy = 90, s = 1.6;
+    const s = Math.min(1.6, innerWidth / 700);
+    const ox = c.width - 260 * s - 20, oy = 90, k = 1.6 * s;
     g.strokeStyle = 'rgba(240,217,152,.55)'; g.lineWidth = 1.2;
     g.beginPath();
-    pts.forEach(([x, y], i) => { const px = ox + x * s, py = oy + y * s; i ? g.lineTo(px, py) : g.moveTo(px, py); });
+    pts.forEach(([x, y], i) => { const px = ox + x * k, py = oy + y * k; i ? g.lineTo(px, py) : g.moveTo(px, py); });
     g.stroke();
     g.fillStyle = '#f5e6b8';
     pts.forEach(([x, y]) => {
-      const px = ox + x * s, py = oy + y * s;
+      const px = ox + x * k, py = oy + y * k;
       g.beginPath(); g.arc(px, py, 3, 0, 7); g.fill();
       g.beginPath(); g.arc(px, py, 7, 0, 7); g.globalAlpha = .25; g.fill(); g.globalAlpha = 1;
     });
@@ -262,16 +302,36 @@ const ZODIACS = {
   draw(); addEventListener('resize', draw);
 })();
 
-/* ================= Music + chimes (WebAudio, no files) ================= */
-let AC = null, musicOn = false, musicNodes = [];
-const musicBtn = document.getElementById('music-btn');
-function ac() { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); return AC; }
+/* ================= Always-on ambient music + chimes (WebAudio, no files) ================= */
+let AC = null, musicStarted = false;
+function ac() {
+  if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+  if (AC.state === 'suspended') AC.resume();
+  return AC;
+}
+function startMusic() {
+  if (musicStarted) return; musicStarted = true;
+  try {
+    const a = ac();
+    const g = a.createGain(); g.gain.value = 0.0;
+    g.gain.linearRampToValueAtTime(0.05, a.currentTime + 4);
+    const f = a.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 520;
+    const lfo = a.createOscillator(); lfo.frequency.value = 0.07;
+    const lfoG = a.createGain(); lfoG.gain.value = 220;
+    lfo.connect(lfoG).connect(f.frequency); lfo.start();
+    [110, 164.8, 220, 277.2].forEach(fr => {
+      const o = a.createOscillator(); o.type = 'sine'; o.frequency.value = fr;
+      o.connect(f); o.start();
+    });
+    f.connect(g).connect(a.destination);
+  } catch (e) {}
+}
 function chime() {
   try {
     const a = ac(), t = a.currentTime;
-    [880, 1320].forEach((f, i) => {
+    [880, 1320].forEach((fr, i) => {
       const o = a.createOscillator(), g = a.createGain();
-      o.type = 'sine'; o.frequency.value = f;
+      o.type = 'sine'; o.frequency.value = fr;
       g.gain.setValueAtTime(0.0001, t + i * .12);
       g.gain.exponentialRampToValueAtTime(0.18, t + i * .12 + .03);
       g.gain.exponentialRampToValueAtTime(0.0001, t + i * .12 + 1.2);
@@ -279,36 +339,19 @@ function chime() {
     });
   } catch (e) {}
 }
-function toggleMusic() {
-  const a = ac();
-  if (!musicOn) {
-    const g = a.createGain(); g.gain.value = 0.0;
-    g.gain.linearRampToValueAtTime(0.05, a.currentTime + 3);
-    const f = a.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 600;
-    const oscs = [110, 164.8, 220].map(fr => {
-      const o = a.createOscillator(); o.type = 'sine'; o.frequency.value = fr;
-      o.connect(f); o.start(); return o;
-    });
-    f.connect(g).connect(a.destination);
-    musicNodes = [...oscs, f, g];
-    musicBtn.textContent = '♪ music: on'; musicOn = true;
-  } else {
-    musicNodes.forEach(n => { try { n.stop ? n.stop() : n.disconnect(); } catch (e) {} });
-    musicNodes = []; musicBtn.textContent = '♪ music: off'; musicOn = false;
-  }
-}
-musicBtn.addEventListener('click', toggleMusic);
+// Music begins on her first tap anywhere (browser autoplay rules), then plays throughout.
+document.addEventListener('pointerdown', startMusic, { once: true });
 
-/* ================= Flow: deck -> choose 3 -> reveal -> reasons -> letter ================= */
+/* ================= Flow: deck -> choose 3 -> MANUAL flips -> reasons -> letter ================= */
 const deckZone = document.getElementById('deck-zone'), deck = document.getElementById('deck'),
       fanZone = document.getElementById('fan-zone'), fan = document.getElementById('fan'),
-      cardsEl = document.getElementById('cards'), reasonsEl = document.getElementById('reasons'),
+      cardsEl = document.getElementById('cards'), flipHint = document.getElementById('flip-hint'),
+      reasonsEl = document.getElementById('reasons'),
       letter = document.getElementById('letter'), bonus = document.getElementById('bonus');
-let picked = [];
+let picked = [], revealed = 0;
 
 deck.addEventListener('click', () => {
-  ac(); // unlock audio on first gesture
-  musicBtn.classList.remove('hidden');
+  startMusic();
   deck.classList.add('shuffling');
   setTimeout(() => {
     deckZone.classList.add('hidden');
@@ -339,16 +382,20 @@ function choose(el) {
 function reveal() {
   fanZone.classList.add('hidden');
   cardsEl.classList.remove('hidden');
+  flipHint.classList.remove('hidden');
   picked.forEach((_, i) => {
     const A = ARCANA[i];
     const c = document.createElement('div');
     c.className = 'card';
     c.innerHTML = `<div class="inner">
-      <div class="face back">☽<small>${SLOTS[i]}</small></div>
-      <div class="face front"><div class="glyph">${A.glyph}</div>
-        <div class="numeral">${A.numeral} · ${A.name}</div><h3>${A.title}</h3><p>${A.text}</p></div>
+      <div class="face back">☽<small>${SLOTS[i]}</small><span class="mono">· R ·</span></div>
+      <div class="face front">
+        <div class="arcana-art ${A.art}"><span class="arcana-glyph">${A.glyph}</span><span class="arcana-num">${A.numeral}</span></div>
+        <div class="arcana-name">${A.name}</div>
+        <h3>${A.title}</h3><p>${A.text}</p>
+      </div>
     </div>`;
-    // 3D tilt follows her cursor
+    // Gentle 3D tilt follows finger/cursor (desktop + mobile safe, passive)
     c.addEventListener('mousemove', e => {
       const r = c.getBoundingClientRect(),
             x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
@@ -358,14 +405,22 @@ function reveal() {
     c.addEventListener('mouseleave', () => {
       c.querySelector('.inner').style.transform = c.classList.contains('flipped') ? 'rotateY(180deg)' : '';
     });
+    // MANUAL flip: she taps each card herself
+    c.addEventListener('click', () => {
+      if (c.classList.contains('flipped')) return;
+      c.classList.add('flipped', 'landed');
+      chime();
+      if (++revealed === 3) {
+        setTimeout(() => {
+          flipHint.classList.add('hidden');
+          buildReasons();
+          reasonsEl.classList.remove('hidden');
+          reasonsEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 1100);
+      }
+    });
     cardsEl.appendChild(c);
-    setTimeout(() => { c.classList.add('flipped', 'landed'); chime(); }, 700 * (i + 1));
   });
-  setTimeout(() => {
-    buildReasons();
-    reasonsEl.classList.remove('hidden');
-    reasonsEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, 700 * 3 + 900);
 }
 
 /* Reasons stars */
