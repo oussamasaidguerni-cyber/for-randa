@@ -6,6 +6,7 @@
 <title>Three Cards for Randa</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+  /* ============ EDIT ME — all personal details live here, mirrored in CONFIG below ============ */
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: radial-gradient(ellipse at 50% 120%, #2b1b4d 0%, #150e2b 55%, #0a0618 100%);
@@ -13,7 +14,8 @@
     min-height: 100vh; overflow-x: hidden; text-align: center;
   }
   #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-  .wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 40px 20px 80px; }
+  #constellation { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .8; }
+  .wrap { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; }
   .moon { font-size: 64px; filter: drop-shadow(0 0 25px #f5e6b8); animation: glow 4s ease-in-out infinite; }
   @keyframes glow { 50% { filter: drop-shadow(0 0 45px #f5e6b8); } }
   h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); color: #f0d998; letter-spacing: 2px; margin: 10px 0; font-weight: 600; }
@@ -26,34 +28,97 @@
   }
   .btn:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(201,162,39,.5); }
   .hidden { display: none !important; }
+  #music-btn {
+    position: fixed; top: 14px; right: 14px; z-index: 5; background: rgba(20,12,40,.7);
+    color: #c9a227; border: 1px solid #c9a227; border-radius: 999px; padding: 8px 16px;
+    font-family: inherit; font-size: .95rem; cursor: pointer;
+  }
+  /* Deck */
   #deck-zone { margin: 30px 0; }
   .deck {
     width: 130px; height: 200px; margin: 0 auto; border-radius: 12px; cursor: pointer;
-    background: linear-gradient(135deg, #3b2566, #241645);
-    border: 2px solid #c9a227; display: flex; align-items: center; justify-content: center;
+    background:
+      radial-gradient(circle at 50% 30%, rgba(201,162,39,.35), transparent 60%),
+      repeating-linear-gradient(45deg, rgba(201,162,39,.12) 0 2px, transparent 2px 8px),
+      linear-gradient(135deg, #3b2566, #241645);
+    border: 2px solid #c9a227; outline: 1px solid rgba(201,162,39,.5); outline-offset: 5px;
+    display: flex; align-items: center; justify-content: center;
     font-size: 56px; transition: transform .3s;
   }
   .deck:hover { transform: scale(1.05); }
   .deck.shuffling { animation: shuffle .5s ease-in-out 6; }
   @keyframes shuffle { 25% { transform: translateX(-14px) rotate(-4deg); } 75% { transform: translateX(14px) rotate(4deg); } }
-  #cards { display: flex; gap: 22px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
-  .card { width: 200px; height: 300px; perspective: 1000px; cursor: pointer; }
+  /* Fan of cards to choose from */
+  #fan { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+  .pick {
+    width: 130px; height: 200px; border-radius: 12px; cursor: pointer; position: relative;
+    background:
+      radial-gradient(circle at 50% 35%, rgba(201,162,39,.4), transparent 55%),
+      repeating-linear-gradient(-45deg, rgba(201,162,39,.12) 0 2px, transparent 2px 8px),
+      linear-gradient(135deg, #3b2566, #1c1038);
+    border: 2px solid #c9a227; display: flex; align-items: center; justify-content: center;
+    font-size: 40px; transition: transform .25s, opacity .5s, box-shadow .25s;
+  }
+  .pick:hover { transform: translateY(-10px); box-shadow: 0 0 20px rgba(201,162,39,.45); }
+  .pick.chosen { border-color: #f5e6b8; box-shadow: 0 0 30px rgba(245,230,184,.7); transform: translateY(-12px); }
+  .pick.dismissed { opacity: .12; pointer-events: none; }
+  .pick .slot {
+    position: absolute; bottom: -26px; left: 0; right: 0; color: #f0d998;
+    font-size: .95rem; letter-spacing: 2px;
+  }
+  /* Revealed spread */
+  #cards { display: flex; gap: 22px; justify-content: center; flex-wrap: wrap; margin-top: 44px; }
+  .card { width: 210px; height: 330px; perspective: 1200px; cursor: pointer; }
   .card .inner {
     width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
-    transition: transform .8s cubic-bezier(.4,.1,.2,1);
+    transition: transform .9s cubic-bezier(.4,.1,.2,1);
   }
   .card.flipped .inner { transform: rotateY(180deg); }
+  .card.landed .inner { animation: landglow 1.6s ease-out; }
+  @keyframes landglow {
+    0% { filter: drop-shadow(0 0 0 rgba(245,230,184,0)); }
+    35% { filter: drop-shadow(0 0 35px rgba(245,230,184,.95)); }
+    100% { filter: drop-shadow(0 0 8px rgba(245,230,184,.25)); }
+  }
   .face {
     position: absolute; inset: 0; backface-visibility: hidden; border-radius: 14px;
-    border: 2px solid #c9a227; padding: 20px 14px; display: flex; flex-direction: column;
+    padding: 22px 14px; display: flex; flex-direction: column;
     align-items: center; justify-content: center; gap: 10px;
   }
-  .back { background: linear-gradient(135deg, #3b2566, #1c1038); font-size: 48px; }
+  .back {
+    background:
+      radial-gradient(circle at 50% 30%, rgba(201,162,39,.35), transparent 60%),
+      repeating-linear-gradient(45deg, rgba(201,162,39,.12) 0 2px, transparent 2px 8px),
+      linear-gradient(135deg, #3b2566, #1c1038);
+    border: 2px solid #c9a227; outline: 1px solid rgba(201,162,39,.5); outline-offset: 5px;
+    font-size: 48px;
+  }
   .back small { font-size: 1rem; color: #c9a227; letter-spacing: 3px; }
-  .front { background: linear-gradient(180deg, #f3e8cf, #e0cfa8); color: #3a2a18; transform: rotateY(180deg); }
-  .front h3 { color: #6b4fa1; letter-spacing: 2px; font-size: 1.05rem; }
+  .front {
+    background:
+      radial-gradient(circle at 50% 0%, rgba(107,79,161,.18), transparent 55%),
+      linear-gradient(180deg, #f5ecd6, #dfcda4);
+    color: #3a2a18; transform: rotateY(180deg);
+    border: 2px solid #c9a227; outline: 1px solid #6b4fa1; outline-offset: -7px;
+  }
+  .front h3 { color: #4a3372; letter-spacing: 2px; font-size: 1rem; }
+  .front .numeral { color: #8a6d1f; letter-spacing: 4px; font-size: .9rem; }
   .front .glyph { font-size: 40px; }
-  .front p { font-size: 1.02rem; line-height: 1.45; }
+  .front p { font-size: 1rem; line-height: 1.45; }
+  /* Reasons */
+  #reasons { margin: 56px auto 0; max-width: 640px; }
+  #reasons h2 { color: #f0d998; letter-spacing: 2px; margin-bottom: 6px; }
+  #sky-reasons { display: flex; gap: 26px; justify-content: center; margin: 22px 0; flex-wrap: wrap; }
+  .rstar {
+    font-size: 30px; cursor: pointer; filter: drop-shadow(0 0 12px #f5e6b8);
+    transition: transform .2s; animation: twinkle 2.4s ease-in-out infinite;
+  }
+  .rstar:nth-child(2n) { animation-delay: .7s; } .rstar:nth-child(3n) { animation-delay: 1.3s; }
+  @keyframes twinkle { 50% { opacity: .45; } }
+  .rstar:hover { transform: scale(1.3); }
+  .rstar.open { animation: none; opacity: .9; }
+  #reason-text { min-height: 3em; font-size: 1.35rem; font-style: italic; color: #f5e6b8; }
+  /* Letter */
   #letter {
     margin: 50px auto 0; max-width: 620px; background: rgba(243,232,207,.06);
     border: 1px solid #c9a227; border-radius: 16px; padding: 36px 30px;
@@ -65,10 +130,16 @@
   #no-btn { background: transparent; }
   #verdict { margin-top: 22px; font-size: 1.5rem; min-height: 2.5em; font-style: italic; color: #f0d998; }
   .hearts { font-size: 2rem; animation: glow 2s infinite; }
+  /* Bonus card */
+  #bonus { margin: 40px auto 0; max-width: 420px; }
+  #bonus .card { width: 240px; height: 360px; margin: 0 auto; }
+  #bonus h2 { color: #f0d998; letter-spacing: 2px; margin-bottom: 18px; }
 </style>
 </head>
 <body>
 <canvas id="stars"></canvas>
+<canvas id="constellation"></canvas>
+<button id="music-btn" class="hidden">♪ music: off</button>
 <div class="wrap">
   <div class="moon">☾</div>
   <h1>Three Cards for Randa</h1>
@@ -79,30 +150,26 @@
     <div class="deck" id="deck">✦</div>
   </div>
 
-  <div id="cards" class="hidden">
-    <div class="card" data-i="0"><div class="inner">
-      <div class="face back">☽<small>PAST</small></div>
-      <div class="face front"><div class="glyph">🌙</div><h3>I · THE PAST</h3>
-        <p>That repost that pissed you off — I need you to know I didn't mean it, not for a second. What you saw is not what I felt. I'm sorry it landed the way it did.</p></div>
-    </div></div>
-    <div class="card" data-i="1"><div class="inner">
-      <div class="face back">☽<small>PRESENT</small></div>
-      <div class="face front"><div class="glyph">🔮</div><h3>II · THE PRESENT</h3>
-        <p>What I see in you right now: someone who feels deeply, trusts her intuition, and loves fiercely — and I get to be loved by her. That is the rarest card in any deck, and it's you.</p></div>
-    </div></div>
-    <div class="card" data-i="2"><div class="inner">
-      <div class="face back">☽<small>FUTURE</small></div>
-      <div class="face front"><div class="glyph">⭐</div><h3>III · THE FUTURE</h3>
-        <p>About this — my proposition came out all wrong, and I own that. Hear this clearly: no matter how absurd the situation ever gets, I would never lie to you. Honesty first. Always. That's my vow.</p></div>
-    </div></div>
+  <div id="fan-zone" class="hidden">
+    <p class="sub" style="font-size:1.15rem">The deck is shuffled. Choose <b>three</b> cards — trust your intuition.</p>
+    <div id="fan"></div>
   </div>
-  <p class="sub hidden" id="tap-hint" style="font-size:1.1rem">Tap each card to reveal it.</p>
+
+  <div id="cards" class="hidden"></div>
+
+  <div id="reasons" class="hidden">
+    <h2>✦ The sky has a few more things to say ✦</h2>
+    <p class="sub" style="font-size:1.05rem">Tap each bright star.</p>
+    <div id="sky-reasons"></div>
+    <div id="reason-text"></div>
+  </div>
 
   <div id="letter" class="hidden">
     <h2>✦ A LETTER, NOT A READING ✦</h2>
     <p>Randa,</p>
-    <p>The cards were just the excuse — this part is only me. I'm sorry about that repost, and I'm sorry about this. Twice now you've had reason to doubt me, and I hate that, because being someone you can trust matters more to me than being right about anything.</p>
-    <p>So no riddles, no readings: I didn't mean the repost, my proposition was badly put, and I will never lie to you — no matter how absurd things get. You have my word, and you have me.</p>
+    <p>The cards were just the excuse — this part is only me. I'm sorry about that repost; I didn't mean it, not for a second, and I hate that it made you doubt me.</p>
+    <p>And about this — I know my proposition came out wrong, and I own that completely. But I need you to hear one thing clearly, because it matters more than anything else here: I would never lie to you. No matter how absurd the situation gets, you get the truth from me. Always.</p>
+    <p>And loyalty — I am yours. No matter what. Being someone you can trust matters more to me than being right about anything. You have my word, and you have me.</p>
     <p class="sign">— yours, always</p>
     <div id="forgive-zone">
       <button class="btn" id="yes-btn">I forgive you</button>
@@ -110,61 +177,230 @@
     </div>
     <div id="verdict"></div>
   </div>
+
+  <div id="bonus" class="hidden">
+    <h2>✦ The deck had one more card for you ✦</h2>
+    <div class="card" id="bonus-card"><div class="inner">
+      <div class="face back">✦<small>FOR YOU</small></div>
+      <div class="face front"><div class="glyph">🌹</div><h3 id="bonus-title">A NIGHT OUT, MY TREAT</h3>
+        <p id="bonus-text">This weekend — dinner anywhere you choose, my treat. Phones away. Just us.</p></div>
+    </div></div>
+  </div>
 </div>
 
 <script>
-  // Starfield
-  const cv = document.getElementById('stars'), cx = cv.getContext('2d');
-  function sky() {
-    cv.width = innerWidth; cv.height = innerHeight;
-    cx.fillStyle = '#fff';
-    for (let i = 0; i < 160; i++) {
-      const a = Math.random() * 0.8 + 0.1;
-      cx.globalAlpha = a;
-      cx.beginPath();
-      cx.arc(Math.random() * cv.width, Math.random() * cv.height, Math.random() * 1.4 + .3, 0, 7);
-      cx.fill();
-    }
-    cx.globalAlpha = 1;
+/* ================= CONFIG — personal details (edit freely, redeploy) ================= */
+const CONFIG = {
+  HER_SIGN: "", // e.g. "pisces" — her zodiac sign; empty = a generic constellation for her
+  DATE_TITLE: "A NIGHT OUT, MY TREAT",
+  DATE_TEXT: "This weekend — dinner anywhere you choose, my treat. Phones away. Just us.",
+  REASONS: [
+    "The way you laugh — my favourite sound in any universe.",
+    "Your intuition. You always feel the truth before anyone speaks it.",
+    "Your big heart — fierce with the people you love. Including me, lucky me.",
+    "Your courage to call me out when I'm wrong. It makes me better.",
+    "You. Exactly as you are. No reading needed for that one."
+  ]
+};
+document.getElementById('bonus-title').textContent = CONFIG.DATE_TITLE;
+document.getElementById('bonus-text').textContent = CONFIG.DATE_TEXT;
+
+/* Card data: arcana identity + message */
+const ARCANA = [
+  { numeral: "V", name: "FIVE OF CUPS", glyph: "🌙", title: "I · THE PAST",
+    text: "That repost that pissed you off — I need you to know I didn't mean it, not for a second. What you saw is not what I felt. I'm sorry it landed the way it did." },
+  { numeral: "VI", name: "THE LOVERS", glyph: "🔮", title: "II · THE PRESENT",
+    text: "What I see in you right now: someone who feels deeply, trusts her intuition, and loves fiercely — and I get to be loved by her. That is the rarest card in any deck, and it's you." },
+  { numeral: "XVII", name: "THE STAR", glyph: "⭐", title: "III · THE FUTURE",
+    text: "About this — my proposition came out all wrong, and I own that. But hear my vow: no matter how absurd things ever get, I will never lie to you, and my loyalty is yours — no matter what. Honesty first. Always." }
+];
+const SLOTS = ["THE PAST", "THE PRESENT", "THE FUTURE"];
+
+/* ================= Starfield ================= */
+const cv = document.getElementById('stars'), cx = cv.getContext('2d');
+function sky() {
+  cv.width = innerWidth; cv.height = innerHeight;
+  cx.fillStyle = '#fff';
+  for (let i = 0; i < 160; i++) {
+    cx.globalAlpha = Math.random() * 0.8 + 0.1;
+    cx.beginPath();
+    cx.arc(Math.random() * cv.width, Math.random() * cv.height, Math.random() * 1.4 + .3, 0, 7);
+    cx.fill();
   }
-  sky(); addEventListener('resize', sky);
+  cx.globalAlpha = 1;
+}
+sky(); addEventListener('resize', sky);
 
-  const deck = document.getElementById('deck'),
-        cards = document.getElementById('cards'),
-        hint = document.getElementById('tap-hint'),
-        letter = document.getElementById('letter');
-  let flipped = 0;
+/* ================= Her constellation ================= */
+const ZODIACS = {
+  aries: [[20,70],[35,55],[50,60],[70,40]], taurus: [[15,60],[30,70],[45,55],[60,65],[75,45]],
+  gemini: [[25,75],[30,50],[35,25],[65,25],[70,50],[75,75],[30,50],[70,50]],
+  cancer: [[20,50],[35,40],[50,45],[65,40],[80,50]], leo: [[15,70],[30,60],[40,45],[55,40],[70,50],[80,30]],
+  virgo: [[20,70],[30,55],[40,60],[50,40],[60,45],[70,25]], libra: [[25,60],[40,45],[60,45],[75,60],[40,45],[50,70],[60,45]],
+  scorpio: [[15,40],[25,55],[35,50],[45,60],[55,55],[65,65],[75,60]], sagittarius: [[20,70],[35,55],[50,60],[55,35],[65,20],[50,60],[75,65]],
+  capricorn: [[20,60],[35,50],[50,55],[65,40],[80,45]], aquarius: [[20,40],[35,45],[50,40],[65,45],[80,40],[30,60],[50,65],[70,60]],
+  pisces: [[25,30],[40,45],[55,40],[45,60],[60,70],[70,55],[55,40]]
+};
+(function constellation() {
+  const c = document.getElementById('constellation'), g = c.getContext('2d');
+  function draw() {
+    c.width = innerWidth; c.height = innerHeight;
+    const pts = ZODIACS[(CONFIG.HER_SIGN || "").toLowerCase()] ||
+      [[30,30],[42,38],[55,34],[48,48],[60,58],[72,52]];
+    const ox = c.width - 260, oy = 90, s = 1.6;
+    g.strokeStyle = 'rgba(240,217,152,.55)'; g.lineWidth = 1.2;
+    g.beginPath();
+    pts.forEach(([x, y], i) => { const px = ox + x * s, py = oy + y * s; i ? g.lineTo(px, py) : g.moveTo(px, py); });
+    g.stroke();
+    g.fillStyle = '#f5e6b8';
+    pts.forEach(([x, y]) => {
+      const px = ox + x * s, py = oy + y * s;
+      g.beginPath(); g.arc(px, py, 3, 0, 7); g.fill();
+      g.beginPath(); g.arc(px, py, 7, 0, 7); g.globalAlpha = .25; g.fill(); g.globalAlpha = 1;
+    });
+  }
+  draw(); addEventListener('resize', draw);
+})();
 
-  deck.addEventListener('click', () => {
-    deck.classList.add('shuffling');
-    setTimeout(() => {
-      document.getElementById('deck-zone').classList.add('hidden');
-      cards.classList.remove('hidden');
-      hint.classList.remove('hidden');
-    }, 3000);
+/* ================= Music + chimes (WebAudio, no files) ================= */
+let AC = null, musicOn = false, musicNodes = [];
+const musicBtn = document.getElementById('music-btn');
+function ac() { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); return AC; }
+function chime() {
+  try {
+    const a = ac(), t = a.currentTime;
+    [880, 1320].forEach((f, i) => {
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, t + i * .12);
+      g.gain.exponentialRampToValueAtTime(0.18, t + i * .12 + .03);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + i * .12 + 1.2);
+      o.connect(g).connect(a.destination); o.start(t + i * .12); o.stop(t + i * .12 + 1.3);
+    });
+  } catch (e) {}
+}
+function toggleMusic() {
+  const a = ac();
+  if (!musicOn) {
+    const g = a.createGain(); g.gain.value = 0.0;
+    g.gain.linearRampToValueAtTime(0.05, a.currentTime + 3);
+    const f = a.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 600;
+    const oscs = [110, 164.8, 220].map(fr => {
+      const o = a.createOscillator(); o.type = 'sine'; o.frequency.value = fr;
+      o.connect(f); o.start(); return o;
+    });
+    f.connect(g).connect(a.destination);
+    musicNodes = [...oscs, f, g];
+    musicBtn.textContent = '♪ music: on'; musicOn = true;
+  } else {
+    musicNodes.forEach(n => { try { n.stop ? n.stop() : n.disconnect(); } catch (e) {} });
+    musicNodes = []; musicBtn.textContent = '♪ music: off'; musicOn = false;
+  }
+}
+musicBtn.addEventListener('click', toggleMusic);
+
+/* ================= Flow: deck -> choose 3 -> reveal -> reasons -> letter ================= */
+const deckZone = document.getElementById('deck-zone'), deck = document.getElementById('deck'),
+      fanZone = document.getElementById('fan-zone'), fan = document.getElementById('fan'),
+      cardsEl = document.getElementById('cards'), reasonsEl = document.getElementById('reasons'),
+      letter = document.getElementById('letter'), bonus = document.getElementById('bonus');
+let picked = [];
+
+deck.addEventListener('click', () => {
+  ac(); // unlock audio on first gesture
+  musicBtn.classList.remove('hidden');
+  deck.classList.add('shuffling');
+  setTimeout(() => {
+    deckZone.classList.add('hidden');
+    fanZone.classList.remove('hidden');
+    for (let i = 0; i < 5; i++) {
+      const d = document.createElement('div');
+      d.className = 'pick'; d.innerHTML = '✦';
+      d.addEventListener('click', () => choose(d));
+      fan.appendChild(d);
+    }
+  }, 3000);
+});
+
+function choose(el) {
+  if (el.classList.contains('chosen') || picked.length >= 3) return;
+  el.classList.add('chosen');
+  const slot = document.createElement('div');
+  slot.className = 'slot'; slot.textContent = SLOTS[picked.length];
+  el.appendChild(slot);
+  picked.push(el);
+  chime();
+  if (picked.length === 3) {
+    document.querySelectorAll('.pick:not(.chosen)').forEach(p => p.classList.add('dismissed'));
+    setTimeout(reveal, 1400);
+  }
+}
+
+function reveal() {
+  fanZone.classList.add('hidden');
+  cardsEl.classList.remove('hidden');
+  picked.forEach((_, i) => {
+    const A = ARCANA[i];
+    const c = document.createElement('div');
+    c.className = 'card';
+    c.innerHTML = `<div class="inner">
+      <div class="face back">☽<small>${SLOTS[i]}</small></div>
+      <div class="face front"><div class="glyph">${A.glyph}</div>
+        <div class="numeral">${A.numeral} · ${A.name}</div><h3>${A.title}</h3><p>${A.text}</p></div>
+    </div>`;
+    // 3D tilt follows her cursor
+    c.addEventListener('mousemove', e => {
+      const r = c.getBoundingClientRect(),
+            x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      c.querySelector('.inner').style.transform = c.classList.contains('flipped')
+        ? `rotateY(180deg) rotateX(${-y * 10}deg) rotateY(${x * 10}deg)` : `rotateX(${-y * 8}deg) rotateY(${x * 8}deg)`;
+    });
+    c.addEventListener('mouseleave', () => {
+      c.querySelector('.inner').style.transform = c.classList.contains('flipped') ? 'rotateY(180deg)' : '';
+    });
+    cardsEl.appendChild(c);
+    setTimeout(() => { c.classList.add('flipped', 'landed'); chime(); }, 700 * (i + 1));
   });
+  setTimeout(() => {
+    buildReasons();
+    reasonsEl.classList.remove('hidden');
+    reasonsEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 700 * 3 + 900);
+}
 
-  document.querySelectorAll('.card').forEach(c => c.addEventListener('click', () => {
-    if (c.classList.contains('flipped')) return;
-    c.classList.add('flipped');
-    if (++flipped === 3) setTimeout(() => {
-      hint.classList.add('hidden');
-      letter.classList.remove('hidden');
-      letter.scrollIntoView({ behavior: 'smooth' });
-    }, 1200);
-  }));
+/* Reasons stars */
+function buildReasons() {
+  const skyR = document.getElementById('sky-reasons'), txt = document.getElementById('reason-text');
+  CONFIG.REASONS.forEach(r => {
+    const s = document.createElement('span');
+    s.className = 'rstar'; s.textContent = '✦';
+    s.addEventListener('click', () => {
+      txt.textContent = '“' + r + '”'; s.classList.add('open'); chime();
+      if ([...skyR.children].every(x => x.classList.contains('open'))) {
+        setTimeout(() => { letter.classList.remove('hidden'); letter.scrollIntoView({ behavior: 'smooth' }); }, 1200);
+      }
+    });
+    skyR.appendChild(s);
+  });
+}
 
-  const verdict = document.getElementById('verdict');
-  document.getElementById('yes-btn').addEventListener('click', () => {
-    verdict.innerHTML = '<div class="hearts">♥ ♥ ♥</div>The stars approve. Come here — you owe me a hug.';
-  });
-  const noBtn = document.getElementById('no-btn');
-  noBtn.addEventListener('click', () => {
-    // The "not yet" button playfully dodges — she has to catch it, then it surrenders
-    const x = (Math.random() - .5) * 200, y = (Math.random() - .5) * 80;
-    noBtn.style.transform = `translate(${x}px, ${y}px)`;
-    verdict.textContent = 'The cards say: he will keep shuffling until you say yes. (Tip: the other button works first try.)';
-  });
+/* Forgive */
+const verdict = document.getElementById('verdict');
+document.getElementById('yes-btn').addEventListener('click', () => {
+  verdict.innerHTML = '<div class="hearts">♥ ♥ ♥</div>The stars approve. Come here — you owe me a hug.';
+  chime();
+  setTimeout(() => {
+    bonus.classList.remove('hidden');
+    bonus.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => document.getElementById('bonus-card').classList.add('flipped', 'landed'), 800);
+  }, 1600);
+});
+const noBtn = document.getElementById('no-btn');
+noBtn.addEventListener('click', () => {
+  const x = (Math.random() - .5) * 200, y = (Math.random() - .5) * 80;
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+  verdict.textContent = 'The cards say: he will keep shuffling until you say yes. (Tip: the other button works first try.)';
+});
 </script>
 </body>
 </html>
